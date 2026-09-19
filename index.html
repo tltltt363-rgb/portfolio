@@ -714,6 +714,7 @@ app.addEventListener('click', e => {
   const move = (arr, i, d) => { const j = i + d; if (j < 0 || j >= arr.length) return false; [arr[i], arr[j]] = [arr[j], arr[i]]; return true; };
   switch (act) {
     case 'scroll': { const el = document.getElementById(a.dataset.to); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
+    case 'link': { const ao = (location.ancestorOrigins && location.ancestorOrigins[0]) || document.referrer || ''; if (window.parent !== window && /^https?:\/\/([^/]*\.)?artmug\.kr(\/|$)/i.test(ao)) { e.preventDefault(); try { window.parent.postMessage({ type: 'portfolio-contact' }, '*'); } catch (err) { } } break; }
     case 'toggle': openMap[sid] = !isOpen(sec); render(); break;
     case 'filter': filter = a.dataset.f; render(); break;
     case 'open': openLB(sid, cid); break;
