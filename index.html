@@ -251,6 +251,30 @@ dialog::backdrop{background:rgba(43,35,39,.5)}
   .dlg .two{grid-template-columns:1fr}
 }
 
+/* ---------- 갤러리 (큰 화면 + 썸네일 줄) ---------- */
+.gal{display:flex;flex-direction:column;gap:14px;outline:none}
+.gal:focus-visible .stage{outline:2px solid var(--accent);outline-offset:3px}
+.gmain{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage{position:relative;width:100%;height:clamp(300px,54vw,620px);border-radius:20px;overflow:hidden;background:#F3EAEA;box-shadow:var(--sh2);touch-action:pan-y;user-select:none}
+.stage>img,.stage>video{width:100%;height:100%;object-fit:contain;background:#F3EAEA;-webkit-user-drag:none}
+.stage>video{background:#000}
+.stage.is-done>img,.stage.is-done>video{filter:grayscale(.55);opacity:.72}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -6px rgba(43,35,39,.45);z-index:2}
+.gnav:hover{background:#fff}
+.gprev{left:14px}.gnext{right:14px}
+.gcount{position:absolute;right:14px;bottom:14px;height:28px;padding:0 12px;display:flex;align-items:center;border-radius:999px;background:rgba(43,35,39,.72);color:#fff;font-size:13px;font-weight:500;pointer-events:none;z-index:1}
+.gcap{display:flex;flex-direction:column;gap:2px;text-align:center;min-height:0}
+.thumbs{display:flex;gap:10px;overflow-x:auto;padding:6px 4px 12px;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--soft2) transparent}
+.thumbs::-webkit-scrollbar{height:8px}.thumbs::-webkit-scrollbar-thumb{background:var(--soft2);border-radius:99px}
+.th{position:relative;flex:0 0 auto;width:clamp(68px,9vw,100px);aspect-ratio:1;padding:0;border:2px solid transparent;border-radius:14px;overflow:hidden;background:#EED9DD;opacity:.7;scroll-snap-align:center;transition:opacity .15s,transform .15s}
+.th:hover{opacity:1}
+.th.on{opacity:1;border-color:var(--accent);box-shadow:0 8px 16px -8px color-mix(in srgb,var(--accent) 70%,transparent);transform:translateY(-2px)}
+.th>img,.th>video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.th.is-done>img,.th.is-done>video{filter:grayscale(.6)}
+.tplay{position:absolute;right:6px;bottom:6px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.tplay svg{width:12px;height:12px}
+@media(max-width:600px){.stage{height:clamp(280px,92vw,460px);border-radius:16px}.gnav{width:42px;height:42px}.gprev{left:8px}.gnext{right:8px}.th{width:64px;border-radius:12px}}
+
 </style>
 </head>
 <body>
@@ -531,6 +555,46 @@ function tplNoticeVisitor(sec) {
     <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span></span><span class="chev">${ICON.chev}</span></button>
     ${open ? `<div class="acc-b"><ol class="notice">${items.map((it, i) => `<li><span class="n">${i + 1}</span><p>${esc(it.text)}</p></li>`).join('')}</ol></div>` : ''}</div>`;
 }
+/* ---------- 갤러리 (방문자 화면): 큰 화면 하나 + 아래 썸네일 줄 ---------- */
+const galIdx = {};
+const galCards = sec => sec.cards.filter(c => filter === 'all' || c.type === filter);
+function galClamp(sec, n) { const i = galIdx[sec.id] || 0; return Math.min(Math.max(i, 0), Math.max(n - 1, 0)); }
+function galMain(sec, cards) {
+  const n = cards.length, i = galClamp(sec, n), c = cards[i], u = cardUrl(c);
+  const done = sec.status && c.status === 'done';
+  const st = sec.status ? `<span class="st ${done ? 'done' : 'open'}">${done ? '분양완료' : '분양중'}</span>` : '';
+  const media = !u ? placeholder(c, i)
+    : c.type === 'video' ? `<video src="${esc(u)}" controls muted loop playsinline autoplay preload="auto"></video>`
+    : `<img src="${esc(u)}" alt="${esc(c.title || '작업물')}" decoding="async" draggable="false">`;
+  const nav = n > 1 ? `<button class="gnav gprev" data-act="gal-prev" aria-label="이전 작업물">${ICON.left}</button><button class="gnav gnext" data-act="gal-next" aria-label="다음 작업물">${ICON.right}</button><span class="gcount">${i + 1} / ${n}</span>` : '';
+  const cap = (c.title || c.desc) ? `<div class="gcap">${c.title ? `<span class="ct">${esc(c.title)}</span>` : ''}${c.desc ? `<span class="cd">${esc(c.desc)}</span>` : ''}</div>` : '';
+  return `<div class="stage${done ? ' is-done' : ''}">${media}${badge(c)}${st}${nav}</div>${cap}`;
+}
+function galThumb(c, k, i, sec) {
+  const u = cardUrl(c), done = sec.status && c.status === 'done';
+  const inner = !u ? `<span class="ph"></span>` : c.type === 'video' ? `<video class="tv" src="${esc(u)}#t=0.1" muted playsinline preload="metadata" tabindex="-1"></video><span class="tplay">${ICON.play}</span>` : `<img src="${esc(u)}" alt="" loading="lazy" decoding="async">`;
+  return `<button class="th${k === i ? ' on' : ''}${done ? ' is-done' : ''}" data-act="gal-go" data-k="${k}" aria-label="${esc(c.title || ('작업물 ' + (k + 1)))} 보기" aria-current="${k === i}">${inner}</button>`;
+}
+function galVisitor(sec, cards) {
+  const i = galClamp(sec, cards.length);
+  return `<div class="gal" data-gsid="${sec.id}" tabindex="0" aria-label="${esc(sec.name)} 갤러리 (좌우 화살표로 넘기기)">
+    <div class="gmain">${galMain(sec, cards)}</div>
+    ${cards.length > 1 ? `<div class="thumbs">${cards.map((c, k) => galThumb(c, k, i, sec)).join('')}</div>` : ''}</div>`;
+}
+function galGo(sid, k, dir) {
+  const sec = getSec(sid); if (!sec) return;
+  const cards = galCards(sec), n = cards.length; if (!n) return;
+  const cur = galClamp(sec, n);
+  galIdx[sid] = dir ? (cur + dir + n) % n : Math.min(Math.max(k, 0), n - 1);
+  const root = document.querySelector(`.gal[data-gsid="${sid}"]`); if (!root) return;
+  const i = galIdx[sid];
+  $('.gmain', root).innerHTML = galMain(sec, cards);
+  $$('.th', root).forEach((b, j) => { b.classList.toggle('on', j === i); b.setAttribute('aria-current', String(j === i)); });
+  const th = $('.thumbs', root), cur2 = th && $$('.th', root)[i];
+  if (th && cur2) th.scrollTo({ left: cur2.offsetLeft - (th.clientWidth - cur2.offsetWidth) / 2, behavior: 'smooth' });
+  const nx = cards[(i + 1) % n]; if (nx && nx.type !== 'video' && cardUrl(nx)) { const im = new Image(); im.src = cardUrl(nx); }
+  observeVideos();
+}
 function tplSecVisitor(sec) {
   if (sec.kind === 'notice') return tplNoticeVisitor(sec);
   const cards = sec.cards.filter(c => filter === 'all' || c.type === filter);
@@ -538,7 +602,7 @@ function tplSecVisitor(sec) {
   const open = isOpen(sec);
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
     <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span><small>${cards.length}개</small></span><span class="chev">${ICON.chev}</span></button>
-    ${open ? `<div class="acc-b"><div class="grid">${cards.map((c, i) => cardVisitor(c, i, sec)).join('')}</div></div>` : ''}</div>`;
+    ${open ? `<div class="acc-b">${galVisitor(sec, cards)}</div>` : ''}</div>`;
 }
 function cardAdmin(c, i, sec) {
   const u = cardUrl(c), last = i === sec.cards.length - 1, sz = sec.uniform ? 1 : c.size;
@@ -643,9 +707,9 @@ function observeVideos() {
     const v = en.target;
     if (en.isIntersecting) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => { }); } else v.pause();
   }), { threshold: .2 });
-  $$('#app video').forEach(v => io.observe(v));
+  $$('#app video:not(.tv)').forEach(v => io.observe(v));
 }
-function postHeight() { try { if (window.parent !== window) window.parent.postMessage({ type: 'portfolio-height', height: document.documentElement.scrollHeight }, '*'); } catch (e) { } }
+function postHeight() { try { if (window.parent !== window) window.parent.postMessage({ type: 'portfolio-height', height: Math.ceil(document.body.getBoundingClientRect().height) }, '*'); } catch (e) { } }
 if ('ResizeObserver' in window) new ResizeObserver(postHeight).observe(document.body);
 
 /* ---------- 알림 ---------- */
@@ -715,8 +779,11 @@ app.addEventListener('click', e => {
   switch (act) {
     case 'scroll': { const el = document.getElementById(a.dataset.to); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; }
     case 'link': { const ao = (location.ancestorOrigins && location.ancestorOrigins[0]) || document.referrer || ''; if (window.parent !== window && /^https?:\/\/([^/]*\.)?artmug\.kr(\/|$)/i.test(ao)) { e.preventDefault(); try { window.parent.postMessage({ type: 'portfolio-contact' }, '*'); } catch (err) { } } break; }
+    case 'gal-go': galGo(a.closest('.gal').dataset.gsid, +a.dataset.k, 0); break;
+    case 'gal-prev': galGo(a.closest('.gal').dataset.gsid, 0, -1); break;
+    case 'gal-next': galGo(a.closest('.gal').dataset.gsid, 0, 1); break;
     case 'toggle': openMap[sid] = !isOpen(sec); render(); break;
-    case 'filter': filter = a.dataset.f; render(); break;
+    case 'filter': filter = a.dataset.f; Object.keys(galIdx).forEach(k => delete galIdx[k]); render(); break;
     case 'open': openLB(sid, cid); break;
     case 'back': admin = true; previewing = false; history.replaceState(null, '', '#admin'); render(); break;
     case 'exit': admin = false; previewing = true; history.replaceState(null, '', location.pathname + location.search); render(); window.scrollTo(0, 0); break;
@@ -819,6 +886,20 @@ app.addEventListener('drop', e => {
 });
 window.addEventListener('dragover', e => { if (admin) e.preventDefault(); });
 window.addEventListener('drop', e => { if (admin) e.preventDefault(); });
+
+/* ---------- 갤러리: 키보드 · 밀어서 넘기기 ---------- */
+document.addEventListener('keydown', e => {
+  const g = e.target.closest && e.target.closest('.gal'); if (!g || admin || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.target.closest('video') && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;   /* 영상 조절과 겹치지 않게 */
+  if (e.key === 'ArrowLeft') { e.preventDefault(); galGo(g.dataset.gsid, 0, -1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); galGo(g.dataset.gsid, 0, 1); }
+});
+let swipe = null;
+app.addEventListener('pointerdown', e => { const st = e.target.closest && e.target.closest('.stage'); swipe = (st && !e.target.closest('video,button')) ? { x: e.clientX, y: e.clientY, g: st.closest('.gal') } : null; });
+app.addEventListener('pointerup', e => {
+  if (!swipe) return; const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y, g = swipe.g; swipe = null;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) galGo(g.dataset.gsid, 0, dx < 0 ? 1 : -1);
+});
 
 /* ---------- 크게 보기 ---------- */
 let lbList = [], lbIdx = 0;
