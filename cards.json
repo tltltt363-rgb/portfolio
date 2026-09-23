@@ -76,6 +76,26 @@
           "status": ""
         },
         {
+          "id": "y1gnngb",
+          "type": "image",
+          "src": "media/bf7u6cf.png",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
+          "id": "igwhr4w",
+          "type": "image",
+          "src": "media/mrz8hwz.jpg",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "xstbk9s",
           "type": "image",
           "src": "media/j2b4ltk.webp",
@@ -652,15 +672,15 @@
       "format": "image",
       "open": false,
       "uniform": true,
-      "status": true,
+      "status": false,
       "items": [],
       "cards": [
         {
           "id": "er2mb3z",
           "type": "image",
-          "src": "",
-          "title": "준비중!!",
-          "desc": "",
+          "src": "media/6t7p9ba.png",
+          "title": "원본: 밀티나 Milltina ( 옷2, 머리2, 뽀잉눈 )",
+          "desc": "분양시 메이크업 제작자분께 방송링크 공유 필요",
           "size": 1,
           "fit": "cover",
           "status": "done"
@@ -681,8 +701,12 @@
           "text": "꼭!! 꼭!! 이용 이용규약 확인 후 에셋 가져와주세요!\n\n유의사항을 숙지하지 않아 생기는 문제는 작가가 책임지지 않습니다."
         },
         {
+          "id": "wsh9sln",
+          "text": "작업후 보관 기간은 한달입니다.\n\n장기 보관이 필요한 경우 미리 문의해주세요."
+        },
+        {
           "id": "xzhbg96",
-          "text": "모든 작업은 결제 확인 후 시작됩니다.\n\n제작된 아바타는 작가(무리)에게 귀속되며, 의뢰인 본인만 사용 가능합니다.\n\n무단 복제, 배포, 재판매, 상업적 사용을 금지합니다.\n\n타인의 모델, 유료 에셋 무단 공유 등 작가와 무관한 저작권 문제로 인한 상황은 작가가 책임지지 않습니다."
+          "text": "모든 작업은 결제 확인 후 시작됩니다.\n\n의뢰인 본인만 사용 가능합니다.\n\n무단 복제, 배포, 재판매, 상업적 사용을 금지합니다.\n\n타인의 모델, 유료 에셋 무단 공유 등 작가와 무관한 저작권 문제로 인한 상황은 작가가 책임지지 않습니다."
         },
         {
           "id": "5lnt2d7",
