@@ -76,6 +76,16 @@
           "status": ""
         },
         {
+          "id": "sk6x1hm",
+          "type": "image",
+          "src": "media/h092tn6.png",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "y1gnngb",
           "type": "image",
           "src": "media/bf7u6cf.png",
@@ -460,6 +470,16 @@
       "items": [],
       "cards": [
         {
+          "id": "yh73pnu",
+          "type": "video",
+          "src": "media/tbzes00.mp4",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "vdbw9dk",
           "type": "video",
           "src": "media/p5tey3d.mp4",
@@ -542,10 +562,20 @@
           "status": ""
         },
         {
+          "id": "wzhfm0o",
+          "type": "video",
+          "src": "media/0yh2wve.mp4",
+          "title": "뽀잉눈 예시",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "l1xvpna",
           "type": "video",
           "src": "media/dtueuni.mp4",
-          "title": "",
+          "title": "뽀잉눈 예시",
           "desc": "",
           "size": 1,
           "fit": "cover",
