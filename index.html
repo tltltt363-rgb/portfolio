@@ -495,6 +495,7 @@ function updateBar() {
 
 /* ---------- 카드 도우미 ---------- */
 const cardUrl = c => (c.lid && objUrls[c.lid]) || c.src || '';
+const inIframe = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 const getSec = id => data.sections.find(s => s.id === id);
 const isOpen = s => admin ? (openMap[s.id] ?? true) : (filter !== 'all' ? true : (openMap[s.id] ?? s.open));
 function safeHref(h) { h = (h || '').trim(); return /^(https?:|mailto:|tel:)/i.test(h) ? h : ''; }
@@ -577,7 +578,7 @@ function galMain(sec, cards) {
     : c.type === 'video' ? `<video src="${esc(u)}" controls muted loop playsinline autoplay preload="auto"></video>`
     : `<img src="${esc(u)}" alt="${esc(c.title || '작업물')}" decoding="async" draggable="false">`;
   const nav = n > 1 ? `<button class="gnav gprev" data-act="gal-prev" aria-label="이전 작업물">${ICON.left}</button><button class="gnav gnext" data-act="gal-next" aria-label="다음 작업물">${ICON.right}</button><span class="gcount">${i + 1} / ${n}</span>` : '';
-  const dl = (c.type === 'video' && u) ? `<a class="gdl" href="${esc(u)}" download aria-label="영상 다운로드" title="영상 다운로드">${ICON.download}</a>` : '';
+  const dl = (c.type === 'video' && u && !inIframe) ? `<a class="gdl" href="${esc(u)}" download aria-label="영상 다운로드" title="영상 다운로드">${ICON.download}</a>` : '';
   const cap = (c.title || c.desc) ? `<div class="gcap">${c.title ? `<span class="ct">${esc(c.title)}</span>` : ''}${c.desc ? `<span class="cd">${esc(c.desc)}</span>` : ''}</div>` : '';
   return `<div class="stage${done ? ' is-done' : ''}">${media}${badge(c)}${st}${dl}${nav}</div>${cap}`;
 }
