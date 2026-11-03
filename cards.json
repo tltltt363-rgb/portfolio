@@ -46,9 +46,59 @@
       "items": [],
       "cards": [
         {
+          "id": "z9yugnz",
+          "type": "image",
+          "src": "media/c41ylf4.png",
+          "title": "원본: 마요 Mayo",
+          "desc": "오리지널 메이크업",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
+          "id": "zda1b8m",
+          "type": "image",
+          "src": "media/orscckv.png",
+          "title": "원본: 솔트 salt",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
+          "id": "suuapfw",
+          "type": "image",
+          "src": "media/34941m6.jpg",
+          "title": "원본: 마요 Mayo",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
+          "id": "9caqebx",
+          "type": "image",
+          "src": "media/7xzmxeu.webp",
+          "title": "원본: 시나노 Shinano",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "35vsqsa",
           "type": "image",
           "src": "media/v5j3yss.webp",
+          "title": "원본: 밀티나 Milltina",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
+          "id": "5fwgbu2",
+          "type": "image",
+          "src": "media/neh7eze.png",
           "title": "원본: 밀티나 Milltina",
           "desc": "",
           "size": 1,
@@ -79,7 +129,7 @@
           "id": "sk6x1hm",
           "type": "image",
           "src": "media/h092tn6.png",
-          "title": "",
+          "title": "원본: 마요 Mayo",
           "desc": "",
           "size": 1,
           "fit": "cover",
@@ -89,7 +139,7 @@
           "id": "y1gnngb",
           "type": "image",
           "src": "media/bf7u6cf.png",
-          "title": "",
+          "title": "원본: 밀티나 Milltina",
           "desc": "",
           "size": 1,
           "fit": "cover",
@@ -99,7 +149,7 @@
           "id": "igwhr4w",
           "type": "image",
           "src": "media/mrz8hwz.jpg",
-          "title": "",
+          "title": "원본: 초콜렛 Chocolat",
           "desc": "",
           "size": 1,
           "fit": "cover",
@@ -240,7 +290,7 @@
           "type": "image",
           "src": "media/efzgg06.webp",
           "title": "원본: 초콜렛 Chocolat",
-          "desc": "초콜렛 버츄얼 제작 불가능",
+          "desc": "",
           "size": 1,
           "fit": "cover",
           "status": ""
@@ -260,7 +310,7 @@
           "type": "image",
           "src": "media/xbbw1j3.webp",
           "title": "원본: 초콜렛 Chocolat",
-          "desc": "초콜렛 버츄얼 제작 불가능",
+          "desc": "",
           "size": 1,
           "fit": "cover",
           "status": ""
@@ -270,16 +320,6 @@
           "type": "image",
           "src": "media/sabzygp.webp",
           "title": "원본: 루미나 Lumina",
-          "desc": "",
-          "size": 1,
-          "fit": "cover",
-          "status": ""
-        },
-        {
-          "id": "9caqebx",
-          "type": "image",
-          "src": "media/tdm85rx.webp",
-          "title": "원본: 시나노 Shinano",
           "desc": "",
           "size": 1,
           "fit": "cover",
@@ -317,6 +357,16 @@
       "status": false,
       "items": [],
       "cards": [
+        {
+          "id": "p2cnlk8",
+          "type": "image",
+          "src": "media/imzak09.png",
+          "title": "원본: 마요 Mayo",
+          "desc": "오리지널 메이크업",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
         {
           "id": "74bkh1o",
           "type": "image",
@@ -470,10 +520,10 @@
       "items": [],
       "cards": [
         {
-          "id": "yh73pnu",
+          "id": "9v3ijlc",
           "type": "video",
-          "src": "media/tbzes00.mp4",
-          "title": "",
+          "src": "media/ygv8e55.mp4",
+          "title": "원본: 마요 Mayo",
           "desc": "",
           "size": 1,
           "fit": "cover",
@@ -490,10 +540,10 @@
           "status": ""
         },
         {
-          "id": "9v3ijlc",
+          "id": "yh73pnu",
           "type": "video",
-          "src": "media/ygv8e55.mp4",
-          "title": "원본: 마요 Mayo",
+          "src": "media/tbzes00.mp4",
+          "title": "",
           "desc": "",
           "size": 1,
           "fit": "cover",
