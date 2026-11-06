@@ -284,6 +284,12 @@ a,a *,button,button *,label,select,summary,[data-act],[data-act] *,[role="button
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="button"]),textarea,[contenteditable]{cursor:var(--cur-text)!important}
 button:disabled,button:disabled *,[aria-disabled="true"]{cursor:var(--cur-no)!important}
 
+
+.rt-tool{position:fixed;display:none;align-items:center;gap:6px;background:#fff;border-radius:12px;box-shadow:0 8px 20px -6px rgba(43,35,39,.45);padding:6px 8px;z-index:70}
+.rt-tool.show{display:flex}
+.rt-tool button{border:0;background:var(--soft);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.rt-tool button:hover{background:var(--soft2)}
+.rt-tool input[type=color]{width:28px;height:28px;border:0;padding:0;border-radius:8px;cursor:pointer;background:none}
 </style>
 </head>
 <body>
@@ -442,7 +448,7 @@ let gh = { owner: '', repo: '', branch: 'main', folder: '', token: '' };
 let idbOK = true;
 
 const app = $('#app');
-const CE = (() => { try { const t = document.createElement('div'); t.contentEditable = 'plaintext-only'; return t.contentEditable === 'plaintext-only' ? 'plaintext-only' : 'true'; } catch (e) { return 'true'; } })();
+const CE = 'true';
 
 /* ---------- 브라우저 저장소 (임시 저장) ---------- */
 function idb() {
@@ -516,8 +522,8 @@ const badge = c => data.site.badges ? `<span class="badge">${BADGE[c.type] || 'I
 /* ---------- 화면 만들기 ---------- */
 function E(key, val, o = {}) {
   const tag = o.tag || 'span', cls = o.cls ? ` class="${o.cls}"` : '';
-  if (!admin) return `<${tag}${cls}>${esc(val)}</${tag}>`;
-  return `<${tag}${cls} contenteditable="${CE}" spellcheck="false" data-edit="${key}" data-ph="${esc(o.ph || '')}"${o.multi ? ' data-multi="1"' : ''}>${esc(val)}</${tag}>`;
+  if (!admin) return `<${tag}${cls}>${sanitizeRich(val)}</${tag}>`;
+  return `<${tag}${cls} contenteditable="${CE}" spellcheck="false" data-edit="${key}" data-ph="${esc(o.ph || '')}"${o.multi ? ' data-multi="1"' : ''}>${sanitizeRich(val)}</${tag}>`;
 }
 function heroTiles() {
   const picks = [], used = new Set();
@@ -847,10 +853,37 @@ app.addEventListener('click', e => {
 });
 
 /* ---------- 글자 · 입력 처리 ---------- */
+function sanitizeRich(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html || '';
+  (function walk(node) {
+    Array.from(node.childNodes).forEach(child => {
+      if (child.nodeType === 3) return;
+      if (child.nodeType !== 1) { child.remove(); return; }
+      const tag = child.tagName;
+      if (tag === 'BR') return;
+      if (tag === 'SPAN') {
+        walk(child);
+        const st = child.style, color = st.color, fs = st.fontSize;
+        Array.from(child.attributes).forEach(a => child.removeAttribute(a.name));
+        let s = '';
+        if (color) s += `color:${color};`;
+        if (fs) s += `font-size:${fs};`;
+        if (s) child.setAttribute('style', s);
+        else { while (child.firstChild) child.parentNode.insertBefore(child.firstChild, child); child.remove(); }
+        return;
+      }
+      walk(child);
+      while (child.firstChild) child.parentNode.insertBefore(child.firstChild, child);
+      child.remove();
+    });
+  })(div);
+  return div.innerHTML;
+}
 const readText = el => el.innerText.replace(/ /g, ' ').replace(/\n+$/, '');
 app.addEventListener('input', e => {
   const t = e.target;
-  if (t.matches('[data-edit]')) { data.site[t.dataset.edit] = readText(t); saveDraft(); }
+  if (t.matches('[data-edit]')) { data.site[t.dataset.edit] = sanitizeRich(t.innerHTML); saveDraft(); }
   else if (t.matches('[data-sec-name]')) { getSec(t.closest('[data-sid]').dataset.sid).name = t.value; saveDraft(); }
   else if (t.matches('[data-nitem]')) {
     const sec = getSec(t.closest('[data-sid]').dataset.sid), it = sec.items.find(i => i.id === t.closest('[data-nid]').dataset.nid);
@@ -864,8 +897,101 @@ app.addEventListener('input', e => {
 app.addEventListener('keydown', e => {
   const t = e.target;
   if (t.matches && t.matches('[data-edit]:not([data-multi])') && e.key === 'Enter') { e.preventDefault(); t.blur(); }
+  else if (t.matches && t.matches('[data-edit][data-multi]') && e.key === 'Enter') { e.preventDefault(); document.execCommand('insertHTML', false, '<br>'); }
   else if (t.matches && t.matches('input.sec-name,input.a-input') && e.key === 'Enter') { e.preventDefault(); t.blur(); }
 });
+(() => {
+  const tool = document.createElement('div');
+  tool.id = 'rtTool'; tool.className = 'rt-tool';
+  tool.innerHTML = '<input type="color" id="rtColor" title="글자 색" value="#2b2327"><button type="button" data-rt="minus" title="작게">A-</button><button type="button" data-rt="plus" title="크게">A+</button><button type="button" data-rt="clear" title="서식 지우기">초기화</button>';
+  document.body.appendChild(tool);
+  let rtRange = null, rtField = null;
+  function rgbToHex(rgb) {
+    const m = rgb && rgb.match(/\d+/g);
+    if (!m) return '#2b2327';
+    return '#' + m.slice(0,3).map(n => (+n).toString(16).padStart(2,'0')).join('');
+  }
+  function rtSave() {
+    if (!rtField) return;
+    data.site[rtField.dataset.edit] = sanitizeRich(rtField.innerHTML);
+    commit();
+  }
+  function positionTool(range) {
+    const rect = range.getBoundingClientRect();
+    if (!rect || (rect.width === 0 && rect.height === 0 && rect.top === 0 && rect.left === 0)) { hideTool(); return; }
+    tool.classList.add('show');
+    const top = Math.max(8, rect.top - tool.offsetHeight - 8);
+    const left = Math.max(8, Math.min(rect.left, window.innerWidth - tool.offsetWidth - 8));
+    tool.style.top = top + 'px';
+    tool.style.left = left + 'px';
+  }
+  function hideTool() { tool.classList.remove('show'); rtRange = null; rtField = null; }
+  function rtWrap(apply) {
+    if (!rtRange || !rtField) return;
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(rtRange);
+    const frag = rtRange.extractContents();
+    const span = document.createElement('span');
+    apply(span);
+    span.appendChild(frag);
+    rtRange.insertNode(span);
+    sel.removeAllRanges();
+    const r2 = document.createRange(); r2.selectNodeContents(span); sel.addRange(r2);
+    rtRange = r2.cloneRange();
+    rtSave();
+    positionTool(rtRange);
+  }
+  function currentSize() {
+    if (!rtRange) return 16;
+    const node = rtRange.startContainer;
+    const el = node.nodeType === 1 ? node : node.parentElement;
+    const fs = el ? parseFloat(getComputedStyle(el).fontSize) : 16;
+    return fs || 16;
+  }
+  tool.addEventListener('mousedown', e => e.preventDefault());
+  tool.querySelector('[data-rt="minus"]').addEventListener('click', () => {
+    const size = Math.max(10, Math.round(currentSize() - 2));
+    rtWrap(span => { span.style.fontSize = size + 'px'; });
+  });
+  tool.querySelector('[data-rt="plus"]').addEventListener('click', () => {
+    const size = Math.min(80, Math.round(currentSize() + 2));
+    rtWrap(span => { span.style.fontSize = size + 'px'; });
+  });
+  tool.querySelector('#rtColor').addEventListener('change', e => {
+    rtWrap(span => { span.style.color = e.target.value; });
+  });
+  tool.querySelector('[data-rt="clear"]').addEventListener('click', () => {
+    if (!rtRange || !rtField) return;
+    const sel = window.getSelection();
+    sel.removeAllRanges(); sel.addRange(rtRange);
+    const text = rtRange.toString();
+    rtRange.deleteContents();
+    const tn = document.createTextNode(text);
+    rtRange.insertNode(tn);
+    sel.removeAllRanges();
+    const r2 = document.createRange(); r2.selectNode(tn); sel.addRange(r2);
+    rtRange = r2.cloneRange();
+    rtSave();
+    positionTool(rtRange);
+  });
+  document.addEventListener('selectionchange', () => {
+    if (!admin) { hideTool(); return; }
+    if (tool.contains(document.activeElement)) return;
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) { hideTool(); return; }
+    const node = sel.anchorNode;
+    if (!node) { hideTool(); return; }
+    const el0 = node.nodeType === 1 ? node : node.parentElement;
+    const field = el0 && el0.closest ? el0.closest('[data-edit]') : null;
+    if (!field) { hideTool(); return; }
+    rtRange = sel.getRangeAt(0).cloneRange();
+    rtField = field;
+    const col = el0 ? getComputedStyle(el0).color : null;
+    if (col) tool.querySelector('#rtColor').value = rgbToHex(col);
+    positionTool(rtRange);
+  });
+  window.addEventListener('scroll', () => { if (rtRange) positionTool(rtRange); }, true);
+})();
 app.addEventListener('paste', e => {
   const t = e.target;
   if (t.matches && t.matches('[data-edit]')) { e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }
