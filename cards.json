@@ -30,14 +30,18 @@
       "items": [
         {
           "id": "1o31212",
-          "text": "● ○ 원이 비어있으면 문의 가능합니다.\n\n슬롯: ○○○"
+          "text": "● ○ 원이 비어있으면 문의 가능합니다.\n\n<span style=\"font-size:16px;\"><span style=\"font-size:18px;\">슬롯: ○○○</span></span>"
+        },
+        {
+          "id": "d8ehu1z",
+          "text": "<span style=\"font-size:16px;\"><span style=\"font-size:18px;\"><span style=\"font-size:16px;\">-이벤트\n리뷰 작성시 사진 한장 더!(약속)</span></span></span>"
         }
       ],
       "cards": []
     },
     {
       "id": "a",
-      "name": "성형",
+      "name": "오리지널 성형",
       "kind": "cards",
       "format": "image",
       "open": false,
@@ -46,6 +50,16 @@
       "items": [],
       "cards": [
         {
+          "id": "1i8gqha",
+          "type": "image",
+          "src": "media/ajzv1r5.png",
+          "title": "원본: 밀티나 Milltina (몸 shinano)",
+          "desc": "데뷔예정님",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
+        },
+        {
           "id": "z9yugnz",
           "type": "image",
           "src": "media/c41ylf4.png",
@@ -53,7 +67,7 @@
           "desc": "오리지널 메이크업",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "zda1b8m",
@@ -63,7 +77,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "suuapfw",
@@ -73,7 +87,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "9caqebx",
@@ -83,7 +97,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "35vsqsa",
@@ -93,7 +107,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "5fwgbu2",
@@ -103,7 +117,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "k9qnolr",
@@ -113,7 +127,7 @@
           "desc": "오리지널 메이크업",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "frj56tu",
@@ -123,7 +137,7 @@
           "desc": "오리지널 메이크업",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "sk6x1hm",
@@ -133,7 +147,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "y1gnngb",
@@ -143,7 +157,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "igwhr4w",
@@ -153,7 +167,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "xstbk9s",
@@ -163,7 +177,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "n1o4va4",
@@ -173,7 +187,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "7jh8s8r",
@@ -183,7 +197,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "wfauzbd",
@@ -193,7 +207,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "fwcxmpu",
@@ -203,7 +217,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "3pkb7iy",
@@ -213,7 +227,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "q2m86aj",
@@ -223,7 +237,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "rcfvynn",
@@ -233,7 +247,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "bxxla2s",
@@ -243,7 +257,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "yt7b723",
@@ -253,7 +267,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "82ur0cm",
@@ -263,7 +277,7 @@
           "desc": "오리지널 메이크업",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "dt5js3d",
@@ -273,7 +287,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "xo1nxmo",
@@ -283,7 +297,7 @@
           "desc": "초콜렛 버츄얼 제작 불가능",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "xnlpdrh",
@@ -293,7 +307,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "i74iw5g",
@@ -303,7 +317,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "bl70yck",
@@ -313,7 +327,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "tnc2a7j",
@@ -323,7 +337,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "tvptuzh",
@@ -333,7 +347,7 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
         },
         {
           "id": "v0xj25i",
@@ -343,7 +357,57 @@
           "desc": "",
           "size": 1,
           "fit": "cover",
-          "status": ""
+          "status": "open"
+        },
+        {
+          "id": "8rblw7n",
+          "type": "image",
+          "src": "",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
+        },
+        {
+          "id": "i38700g",
+          "type": "image",
+          "src": "",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
+        },
+        {
+          "id": "cypynt6",
+          "type": "image",
+          "src": "",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
+        },
+        {
+          "id": "h6dr571",
+          "type": "image",
+          "src": "",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
+        },
+        {
+          "id": "bviblkn",
+          "type": "image",
+          "src": "",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": "open"
         }
       ]
     },
@@ -520,11 +584,21 @@
       "items": [],
       "cards": [
         {
+          "id": "bmhqtg4",
+          "type": "video",
+          "src": "media/p236420.mp4",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "9v3ijlc",
           "type": "video",
           "src": "media/ygv8e55.mp4",
           "title": "원본: 마요 Mayo",
-          "desc": "",
+          "desc": "오리지널 메이크업 (눈x)",
           "size": 1,
           "fit": "cover",
           "status": ""
@@ -592,6 +666,16 @@
       "items": [],
       "cards": [
         {
+          "id": "c0pfrma",
+          "type": "video",
+          "src": "media/4uqk98c.mp4",
+          "title": "",
+          "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        },
+        {
           "id": "086k66b",
           "type": "video",
           "src": "media/2d8fs63.mp4",
@@ -637,6 +721,28 @@
           "src": "media/7q76fba.mp4",
           "title": "뽀잉눈 예시",
           "desc": "",
+          "size": 1,
+          "fit": "cover",
+          "status": ""
+        }
+      ]
+    },
+    {
+      "id": "vu1gibi",
+      "name": "뽀잉 귀",
+      "kind": "cards",
+      "format": "mixed",
+      "open": false,
+      "uniform": true,
+      "status": false,
+      "items": [],
+      "cards": [
+        {
+          "id": "sqkcddt",
+          "type": "video",
+          "src": "media/9gqgdqd.mp4",
+          "title": "뽀잉귀",
+          "desc": "의뢰자분 취향에 맞춰 변경 가능",
           "size": 1,
           "fit": "cover",
           "status": ""
@@ -774,18 +880,7 @@
       "uniform": true,
       "status": false,
       "items": [],
-      "cards": [
-        {
-          "id": "er2mb3z",
-          "type": "image",
-          "src": "media/6t7p9ba.png",
-          "title": "원본: 밀티나 Milltina ( 옷2, 머리2, 뽀잉눈 )",
-          "desc": "분양시 메이크업 제작자분께 방송링크 공유 필요",
-          "size": 1,
-          "fit": "cover",
-          "status": "done"
-        }
-      ]
+      "cards": []
     },
     {
       "id": "g",
@@ -798,11 +893,11 @@
       "items": [
         {
           "id": "ll0j5k5",
-          "text": "꼭!! 꼭!! 이용 이용규약 확인 후 에셋 가져와주세요!\n\n유의사항을 숙지하지 않아 생기는 문제는 작가가 책임지지 않습니다."
+          "text": "<span style=\"color:rgb(188, 36, 36);\"><span style=\"font-size:16px;\"><span style=\"font-size:18px;\"><span style=\"color:rgb(210, 15, 15);\">꼭!! 꼭!! 이용 이용규약 확인 후 에셋 가져와주세요!</span></span></span></span>\n\n유의사항을 숙지하지 않아 생기는 문제는 작가가 책임지지 않습니다."
         },
         {
           "id": "wsh9sln",
-          "text": "작업후 보관 기간은 한달입니다.\n\n장기 보관이 필요한 경우 미리 문의해주세요."
+          "text": "작업후 보관 기간은 <span style=\"color:rgb(213, 68, 111);\">한달</span>입니다.\n\n장기 보관이 필요한 경우 미리 문의해주세요."
         },
         {
           "id": "xzhbg96",
@@ -846,7 +941,7 @@
         },
         {
           "id": "huvojrc",
-          "text": "작업 과정\n\n아바타 성형 및 텍스쳐 > 컨펌 > 의상 헤어 추가 > 컨펌 > 추가작업 > 컨펌 > 최종확인 후 업로드"
+          "text": "작업 과정\n\n아바타 성형 및 텍스쳐 &gt; 컨펌 &gt; 페이셜 &gt; 컨펌 &gt; 의상 헤어 추가 &gt; 컨펌 &gt; 추가작업 &gt; 컨펌 &gt; 최종확인 후 파일전달"
         }
       ],
       "cards": []
