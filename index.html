@@ -210,7 +210,7 @@ dialog::backdrop{background:rgba(43,35,39,.5)}
 .n-list{display:flex;flex-direction:column;gap:12px;padding-top:6px}
 .n-row{display:flex;gap:12px;align-items:flex-start}
 .n-row .n{margin-top:9px}
-.n-text{flex:1;min-width:0;height:auto;min-height:46px;padding:11px 12px;line-height:1.6;resize:none;overflow:hidden;font-family:inherit}
+.n-text{flex:1;min-width:0;height:auto;min-height:46px;padding:11px 12px;line-height:1.6;resize:none;overflow:hidden;font-family:inherit;white-space:pre-line}
 .n-tools{display:flex;gap:6px;flex:none}
 .n-tools .ib{width:36px;height:36px;margin-top:5px}
 .fld.kind{height:44px;justify-content:center;font-size:13px}
@@ -572,7 +572,7 @@ function tplNoticeVisitor(sec) {
   const open = isOpen(sec);
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
     <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span></span><span class="chev">${ICON.chev}</span></button>
-    ${open ? `<div class="acc-b"><ol class="notice">${items.map((it, i) => `<li><span class="n">${i + 1}</span><p>${esc(it.text)}</p></li>`).join('')}</ol></div>` : ''}</div>`;
+    ${open ? `<div class="acc-b"><ol class="notice">${items.map((it, i) => `<li><span class="n">${i + 1}</span><p>${sanitizeRich(it.text)}</p></li>`).join('')}</ol></div>` : ''}</div>`;
 }
 /* ---------- 갤러리 (방문자 화면): 큰 화면 하나 + 아래 썸네일 줄 ---------- */
 const galIdx = {};
@@ -660,7 +660,7 @@ function tplNoticeAdmin(sec, idx) {
       </div></div>
     ${open ? `<div class="acc-b"><div class="n-list">
       ${sec.items.map((it, i) => `<div class="n-row" data-nid="${it.id}"><span class="n">${i + 1}</span>
-        <textarea class="a-input n-text" data-nitem rows="2" placeholder="주의사항을 적어주세요" aria-label="항목 ${i + 1}">${esc(it.text)}</textarea>
+        <div class="a-input n-text" contenteditable="${CE}" spellcheck="false" data-nitem data-multi="1" data-ph="주의사항을 적어주세요" aria-label="항목 ${i + 1}">${sanitizeRich(it.text)}</div>
         <div class="n-tools"><button class="ib" data-act="n-up" aria-label="위로" title="위로" ${i === 0 ? 'disabled' : ''}>${ICON.up}</button><button class="ib" data-act="n-down" aria-label="아래로" title="아래로" ${i === n - 1 ? 'disabled' : ''}>${ICON.down}</button><button class="ib danger" data-act="n-del" aria-label="항목 삭제" title="삭제">${ICON.trash}</button></div></div>`).join('')}
       <button class="add-sec mini" data-act="n-add">${ICON.plus}항목 추가</button>
     </div></div>` : ''}</div>`;
@@ -887,7 +887,7 @@ app.addEventListener('input', e => {
   else if (t.matches('[data-sec-name]')) { getSec(t.closest('[data-sid]').dataset.sid).name = t.value; saveDraft(); }
   else if (t.matches('[data-nitem]')) {
     const sec = getSec(t.closest('[data-sid]').dataset.sid), it = sec.items.find(i => i.id === t.closest('[data-nid]').dataset.nid);
-    if (it) { it.text = t.value; saveDraft(); } autosize(t);
+    if (it) { it.text = sanitizeRich(t.innerHTML); saveDraft(); }
   }
   else if (t.matches('[data-ctitle],[data-cdesc]')) {
     const sec = getSec(t.closest('[data-sid]').dataset.sid), c = sec.cards.find(c => c.id === t.closest('[data-cid]').dataset.cid);
@@ -897,7 +897,7 @@ app.addEventListener('input', e => {
 app.addEventListener('keydown', e => {
   const t = e.target;
   if (t.matches && t.matches('[data-edit]:not([data-multi])') && e.key === 'Enter') { e.preventDefault(); t.blur(); }
-  else if (t.matches && t.matches('[data-edit][data-multi]') && e.key === 'Enter') { e.preventDefault(); document.execCommand('insertHTML', false, '<br>'); }
+  else if (t.matches && t.matches('[data-edit][data-multi],[data-nitem][data-multi]') && e.key === 'Enter') { e.preventDefault(); document.execCommand('insertHTML', false, '<br>'); }
   else if (t.matches && t.matches('input.sec-name,input.a-input') && e.key === 'Enter') { e.preventDefault(); t.blur(); }
 });
 (() => {
@@ -913,7 +913,14 @@ app.addEventListener('keydown', e => {
   }
   function rtSave() {
     if (!rtField) return;
-    data.site[rtField.dataset.edit] = sanitizeRich(rtField.innerHTML);
+    const html = sanitizeRich(rtField.innerHTML);
+    if (rtField.dataset.edit) { data.site[rtField.dataset.edit] = html; }
+    else if (rtField.hasAttribute('data-nitem')) {
+      const sidEl = rtField.closest('[data-sid]'), nidEl = rtField.closest('[data-nid]');
+      const sec = sidEl && getSec(sidEl.dataset.sid);
+      const it = sec && nidEl && sec.items.find(i => i.id === nidEl.dataset.nid);
+      if (it) it.text = html;
+    }
     commit();
   }
   function positionTool(range) {
@@ -982,7 +989,7 @@ app.addEventListener('keydown', e => {
     const node = sel.anchorNode;
     if (!node) { hideTool(); return; }
     const el0 = node.nodeType === 1 ? node : node.parentElement;
-    const field = el0 && el0.closest ? el0.closest('[data-edit]') : null;
+    const field = el0 && el0.closest ? el0.closest('[data-edit],[data-nitem]') : null;
     if (!field) { hideTool(); return; }
     rtRange = sel.getRangeAt(0).cloneRange();
     rtField = field;
@@ -994,9 +1001,9 @@ app.addEventListener('keydown', e => {
 })();
 app.addEventListener('paste', e => {
   const t = e.target;
-  if (t.matches && t.matches('[data-edit]')) { e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }
+  if (t.matches && t.matches('[data-edit],[data-nitem]')) { e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }
 });
-app.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('[data-edit]')) commit(); });
+app.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('[data-edit],[data-nitem]')) commit(); });
 app.addEventListener('change', e => {
   const t = e.target, sid = t.closest && t.closest('[data-sid]') ? t.closest('[data-sid]').dataset.sid : null;
   if (t.matches('[data-file-add]')) { addFiles(sid, t.files); t.value = ''; }
