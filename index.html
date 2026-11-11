@@ -80,6 +80,7 @@ svg{flex-shrink:0}
 .chev{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--line);background:#fff;box-shadow:0 1px 2px rgba(80,40,55,.1),0 6px 12px -4px rgba(80,40,55,.2);flex-shrink:0}
 .acc.open .chev{background:var(--soft)}
 .acc.open .chev svg{transform:rotate(180deg)}
+.chev-hint{font-size:11px;color:var(--muted);white-space:nowrap}
 .acc-b{padding:6px clamp(18px,2.2vw,28px) clamp(20px,2.2vw,28px)}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;grid-auto-flow:dense}
 .card{min-width:0;display:flex;flex-direction:column;gap:12px}
@@ -571,7 +572,7 @@ function tplNoticeVisitor(sec) {
   if (filter !== 'all' || !items.length) return '';
   const open = isOpen(sec);
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
-    <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span></span><span class="chev">${ICON.chev}</span></button>
+    <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span></span><small class="chev-hint">누르면 펼쳐져요</small><span class="chev">${ICON.chev}</span></button>
     ${open ? `<div class="acc-b"><ol class="notice">${items.map((it, i) => `<li><span class="n">${i + 1}</span><p>${sanitizeRich(it.text)}</p></li>`).join('')}</ol></div>` : ''}</div>`;
 }
 /* ---------- 갤러리 (방문자 화면): 큰 화면 하나 + 아래 썸네일 줄 ---------- */
@@ -621,7 +622,7 @@ function tplSecVisitor(sec) {
   if (!sec.cards.length || !cards.length) return '';
   const open = isOpen(sec);
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
-    <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span><small>${cards.length}개</small></span><span class="chev">${ICON.chev}</span></button>
+    <button class="acc-h" data-act="toggle" aria-expanded="${open}"><span class="acc-t"><span>${esc(sec.name)}</span><small>${cards.length}개</small></span><small class="chev-hint">누르면 펼쳐져요</small><span class="chev">${ICON.chev}</span></button>
     ${open ? `<div class="acc-b">${galVisitor(sec, cards)}</div>` : ''}</div>`;
 }
 function cardAdmin(c, i, sec) {
@@ -650,6 +651,7 @@ function tplNoticeAdmin(sec, idx) {
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
     <div class="acc-h admin">
       <div class="a-left"><button class="chev" data-act="toggle" aria-label="접기 / 펼치기" aria-expanded="${open}">${ICON.chev}</button>
+        <small class="chev-hint">누르면 펼쳐져요</small>
         <input class="sec-name" data-sec-name value="${esc(sec.name)}" aria-label="섹션 이름" placeholder="섹션 이름"></div>
       <div class="a-right">
         <span class="fld kind">글 섹션 · 항목 ${n}개</span>
@@ -672,6 +674,7 @@ function tplSecAdmin(sec, idx) {
   return `<div class="acc${open ? ' open' : ''}" data-sid="${sec.id}">
     <div class="acc-h admin">
       <div class="a-left"><button class="chev" data-act="toggle" aria-label="접기 / 펼치기" aria-expanded="${open}">${ICON.chev}</button>
+        <small class="chev-hint">누르면 펼쳐져요</small>
         <input class="sec-name" data-sec-name value="${esc(sec.name)}" aria-label="섹션 이름" placeholder="섹션 이름"></div>
       <div class="a-right">
         <label class="fld">올릴 수 있는 형식<select class="sel" data-sec-fmt>${opts}</select></label>
